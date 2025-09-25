@@ -14,17 +14,24 @@ export function StudyForm({ onAdd }: StudyFormProps) {
     function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
 
-        const study = {
+        const study: Study = {
+            id: crypto.randomUUID(),
             subject,
             minutes,
             date,
             notes,
         };
-        onAdd(study as Study);
-        console.log(study);
+        
+        onAdd(study);
+
+        setSubject("");
+        setMinutes(0);
+        setDate("");
+        setNotes("");
     }
 
     return (
+        
         <form
             onSubmit={handleSubmit}
         >
