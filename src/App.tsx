@@ -5,18 +5,18 @@ import { Layout } from "./components/layout";
 import { NotFound } from "./pages/not-found";
 import { ErrorFallback } from "./components/fallback";
 import { ErrorBoundary } from "react-error-boundary";
+import { StudyDetails } from "./pages/study-details";
 
 function App() {
 
   return (
     <>
       <BrowserRouter>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <Routes>
-            <Route path="/" element={<Layout/>}>
-              <Route element={<Home />} index path="/" />
-              <Route element={<NewSession />} index path="/add" />
-              <Route path="*" element={<NotFound />} />
+        <Routes>
+          <Route path="/" element={<Layout/>}>
+          <Route element={<Home />} index path="/" />
+          <Route element={<NewSession />} index path="/add" />
+          <Route element={<StudyDetails />} index path="/study-details" />
           </Route>
         </Routes>
         </ErrorBoundary>
