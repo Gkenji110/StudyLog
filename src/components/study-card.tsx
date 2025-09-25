@@ -1,18 +1,17 @@
+import type { Study } from "../types/study";
+
+
 interface StudyCardProps {
-    id: string;
-    subject: string;
-    minutes: number;
-    date: string;
-    notes?: string;
+    study: Study;
 }
 
-export function StudyCard(props: StudyCardProps) {
+export function StudyCard({ study }: StudyCardProps) {
     return (
         <div className="bg-white shadow rounded-lg p-4 w-3/5">
-            <h2>Matéria: {props.subject}</h2>
-            <p>Tempo: {props.minutes} min</p>
-            <p>Data: {props.date}</p>
-            <p>Notas: {props.notes}</p>
+            <h2>Matéria: {study.subject}</h2>
+            <p>Tempo: {study.minutes} min</p>
+            <p>Data: {study.date}</p>
+            <p>Notas: {study.notes}</p>
         </div>
     )
 }
