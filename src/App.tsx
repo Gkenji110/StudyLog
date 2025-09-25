@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { Home } from "./pages/home"
 import { NewSession } from "./pages/new-session";
 import { Layout } from "./components/layout";
-import { StudyCard } from "./components/study-card";
 
 function App() {
 
