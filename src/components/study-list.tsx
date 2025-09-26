@@ -3,14 +3,18 @@ import { StudyResume } from "./study-resume";
 
 interface StudyListProps {
   studyList: Study[];
+  removeStudy: (id: string) => void;
+
 }
 
-export function StudyList({ studyList }: StudyListProps) {
+export function StudyList({ studyList, removeStudy }: StudyListProps) {
   return (
-    <div className="flex flex-col items-center gap-3 mt-6 w-full">
-      {studyList.map((value) => (
-        <StudyResume key={value.id} study={value} />
-      ))}
-    </div>
+    <>
+        <div className="flex flex-col items-center gap-3 mt-6 w-full">
+            {studyList.map((value) => {
+                return <StudyResume removeStudy={removeStudy} study={value} />;
+            })}
+        </div>
+    </>
   );
 }
