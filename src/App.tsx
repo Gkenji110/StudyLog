@@ -1,25 +1,32 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import { Home } from "./pages/home"
-import { NewSession } from "./pages/new-session";
 import { Layout } from "./components/layout";
-import { NotFound } from "./pages/not-found";
 import { ErrorFallback } from "./components/fallback";
 import { ErrorBoundary } from "react-error-boundary";
-import { StudyDetails } from "./pages/study-details";
+import { lazy, Suspense } from "react";
+import { Loading } from "./components/loading";
+
+const Home = lazy(() => import('./pages/home').then(m => ({ default: m.Home })));
+const NewSession = lazy(() => import('./pages/new-session').then(m => ({ default: m.NewSession })));
+const StudyDetails = lazy(() => import('./pages/study-details').then(m => ({ default: m.StudyDetails })));
+const NotFound = lazy(() => import('./pages/not-found').then(m => ({ default: m.NotFound })));
 
 function App() {
 
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout/>}>
-          <Route element={<Home />} index path="/" />
-          <Route element={<NewSession />} index path="/add" />
-          <Route element={<StudyDetails />} index path="/study-details" />
-          </Route>
-        </Routes>
-        </ErrorBoundary>
+        <Suspense fallback={<Loading />}>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Routes>
+              <Route path="/" element={<Layout/>}>
+                <Route element={<Home />} index path="/" />
+                <Route element={<NewSession />} index path="/add" />
+                <Route element={<StudyDetails />} index path="/study-details" />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </ErrorBoundary>
+        </Suspense>
       </BrowserRouter>
 
     </>
