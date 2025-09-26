@@ -11,7 +11,7 @@ export function StudyForm({ onAdd }: StudyFormProps) {
   const [date, setDate] = useState("");
   const [notes, setNotes] = useState("");
 
-  function handleSubmit(event: React.FormEvent) {
+  function handleSubmit(event: React.FormEvent): void {
     event.preventDefault();
 
     const study: Study = {

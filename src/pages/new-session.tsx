@@ -1,15 +1,19 @@
-import { useCallback, useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { Study } from "../types/study";
 import { StudyForm } from "../components/study-form";
-import { StudyList } from "../components/study-list";
 
-export function NewSession(){
-    const [studies, setStudies] = useState<Study[]>([]);
+    
+interface NewSessionProps {
+    studies: Study[];
+    onAdd: (study: Study) => void;
+}
 
+export function NewSession({ onAdd, studies}: NewSessionProps){
 
     const studyTotal = useMemo(() => {
         return studies.length;
     }, [studies]);
+
 
     const studyMinutes = useMemo(() => {
         let studyMinutes: number = 0;
@@ -24,21 +28,7 @@ export function NewSession(){
         return `${hours}:${minutes}`;
     }, [studies]);
 
-    const newSession = useCallback((study: Study) => {
-        setStudies((prev) => [...prev, study]);
-    }, []);
-
-    const removeStudy = useCallback((id: string) => {
-        const studyToDelete = studies.findIndex((value) => {
-            return value.id === id;
-        });
-
-        const updatedStudies = [...studies];
-
-        updatedStudies.splice(studyToDelete, 1);
-
-        setStudies(updatedStudies);
-    }, []);
+    
 
 
 
@@ -51,9 +41,8 @@ export function NewSession(){
 
             <p>Tempo de sessão de estudo: {studyMinutes}</p>
 
-            <StudyForm onAdd={newSession} />
-            
-            <StudyList removeStudy={removeStudy} studyList={studies} />
+            <StudyForm onAdd={onAdd} />
+
         </>
     )
 
