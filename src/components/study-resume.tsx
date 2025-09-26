@@ -3,9 +3,10 @@ import type { Study } from "../types/study";
 
 interface StudyFormProps {
   study: Study;
+  removeStudy: (id: string) => void;
 }
 
-export function StudyResume({ study }: StudyFormProps) {
+export function StudyResume({ study, removeStudy }: StudyFormProps) {
   return (
     <div className="bg-violet-300 rounded-lg shadow p-4 mb-3 w-3/5 flex justify-between items-center">
         <div>
@@ -14,14 +15,21 @@ export function StudyResume({ study }: StudyFormProps) {
             <Link
                 to={`/study/${study.id}`}
                 state={{ study }}
-                className="text-sm font-semibold text-white bg-violet-500 px-3 py-1 rounded hover:bg-violet-600"
+                className="bg-violet-500 text-white font-bold hover:underline rounded  p-2"
             >
                 Detalhes
             </Link>
+
+            <button 
+                onClick={() => removeStudy(study.id)}
+                className="bg-red-600 text-white font-bold hover:underline rounded  p-2"
+            >
+                Remover 
+            </button>
         </div>
 
         <h3>Data: {study.date}</h3>
-    </div>
+    </div>  
 
   );
 }
