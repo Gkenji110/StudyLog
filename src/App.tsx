@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { Layout } from "./components/layout";
+import { ErrorFallback } from "./components/fallback";
+import { ErrorBoundary } from "react-error-boundary";
+import { lazy, Suspense, useCallback, useState } from "react";
+import { Loading } from "./components/loading";
+import type { Study } from "./types/study";
+
+const Home = lazy(() => import('./pages/home').then(m => ({ default: m.Home })));
+const NewSession = lazy(() => import('./pages/new-session').then(m => ({ default: m.NewSession })));
+const StudyDetails = lazy(() => import('./pages/study-details').then(m => ({ default: m.StudyDetails })));
+const NotFound = lazy(() => import('./pages/not-found').then(m => ({ default: m.NotFound })));
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [studies, setStudies] = useState<Study[]>([]);
+
+  const removeStudy = useCallback((id: string) => {
+    const studyToDelete = studies.findIndex((value) => {
+      return value.id === id;
+    });
+
+    const updatedStudies = [...studies];
+
+    updatedStudies.splice(studyToDelete, 1);
+
+    setStudies(updatedStudies);
+  }, []);
+
+  // Renderiza somente uma vez
+  const addStudy = useCallback((study: Study) => {
+    setStudies((prev) => [...prev, study]);
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+        <Suspense fallback={<Loading />}>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Routes>
+              <Route path="/" element={<Layout/>}>
+                <Route 
+                  index 
+                  element={
+                    <Home studies={studies} removeStudy={removeStudy}/>} />
+                <Route 
+                  path="/add" 
+                  element={<NewSession onAdd={addStudy} studies={studies}/>} />
+                <Route path="/study/:id" element={<StudyDetails />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </ErrorBoundary>
+        </Suspense>
+      </BrowserRouter>
     </>
-  )
+  );
 }
 
 export default App
