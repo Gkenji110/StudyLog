@@ -12,11 +12,13 @@ function App() {
   return (
     <>
       <BrowserRouter>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
         <Routes>
           <Route path="/" element={<Layout/>}>
-          <Route element={<Home />} index path="/" />
-          <Route element={<NewSession />} index path="/add" />
-          <Route element={<StudyDetails />} index path="/study-details" />
+          <Route index element={<Home />} />
+          <Route path="/add" element={<NewSession />} />
+          <Route path="/study/:id" element={<StudyDetails />} />
+          <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
         </ErrorBoundary>
