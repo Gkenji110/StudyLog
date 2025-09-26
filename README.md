@@ -36,6 +36,8 @@ TODO: adicionar link do deploy
 
 TODO: detalhar responsabilidades de cada integrante
 
+João: Criou study details, estilizou e criou o readme
+
 ## Endereço do repositório
 
 [Study](https://github.com/Gkenji110/StudyLog)
